@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven { url 'https://api.xposed.info/' }
     }
 }
-rootProject.name = "SBM - Spotify"
+rootProject.name = "SBM-Spotify"
 include ':app'
