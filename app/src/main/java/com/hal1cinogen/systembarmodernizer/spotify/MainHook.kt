@@ -84,7 +84,7 @@ class MainHook : IXposedHookLoadPackage {
                     window.navigationBarColor = Color.TRANSPARENT
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     WindowCompat.setDecorFitsSystemWindows(window, false)
-                    val dex1 = 0x7f0b0749
+                    val dex1 = 0x7f0b0746
                     val bottomContainer = activity.findViewById<ViewGroup>(dex1) ?: return
                     val height = getNavigationHeight(activity)
                     bottomContainer.updateLayoutParams<ViewGroup.LayoutParams> {
