@@ -77,6 +77,7 @@ class MainHook : IXposedHookLoadPackage {
             Bundle::class.java,
             object : XC_MethodHook() {
 
+                @SuppressLint("DiscouragedApi")
                 override fun afterHookedMethod(param: MethodHookParam) {
                     val activity = param.thisObject as? Activity ?: return
                     val window = activity.window ?: return
@@ -84,8 +85,11 @@ class MainHook : IXposedHookLoadPackage {
                     window.navigationBarColor = Color.TRANSPARENT
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     WindowCompat.setDecorFitsSystemWindows(window, false)
-                    val dex1 = 0x7f0b0746
-                    val bottomContainer = activity.findViewById<ViewGroup>(dex1) ?: return
+                    val decorView = window.decorView
+                    val resources = decorView.resources
+                    val id = resources.getIdentifier("footer_container", "id", activity.packageName)
+                    if (id == 0) return
+                    val bottomContainer = activity.findViewById<ViewGroup>(id) ?: return
                     val height = getNavigationHeight(activity)
                     bottomContainer.updateLayoutParams<ViewGroup.LayoutParams> {
                         (this as MarginLayoutParams).bottomMargin = height
@@ -98,7 +102,7 @@ class MainHook : IXposedHookLoadPackage {
         val clazz = XposedHelpers.findClass(ACTIVITY_QUEUE, lpp.classLoader)
         XposedHelpers.findAndHookMethod(
             clazz,
-            "onCreate",
+            METHOD_ON_CREATE,
             Bundle::class.java,
             object : XC_MethodHook() {
 
