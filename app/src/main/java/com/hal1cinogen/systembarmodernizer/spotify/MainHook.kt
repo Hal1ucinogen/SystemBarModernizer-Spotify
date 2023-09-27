@@ -33,7 +33,8 @@ class MainHook : IXposedHookLoadPackage {
     }
 
     private fun processMain(lpp: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClass(ACTIVITY_MAIN, lpp.classLoader)
+        val clazz = XposedHelpers.findClassIfExists(ACTIVITY_MAIN, lpp.classLoader)
+            ?: XposedHelpers.findClassIfExists(ACTIVITY_MAIN_2, lpp.classLoader) ?: return
         XposedHelpers.findAndHookMethod(
             clazz,
             METHOD_ON_CREATE,
@@ -52,7 +53,7 @@ class MainHook : IXposedHookLoadPackage {
     }
 
     private fun processNowPlaying(lpp: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClass(ACTIVITY_PLAYING, lpp.classLoader)
+        val clazz = XposedHelpers.findClassIfExists(ACTIVITY_PLAYING, lpp.classLoader) ?: return
         XposedHelpers.findAndHookMethod(
             clazz,
             METHOD_ON_CREATE,
@@ -70,7 +71,7 @@ class MainHook : IXposedHookLoadPackage {
     }
 
     private fun processLyrics(lpp: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClass(ACTIVITY_LYRICS, lpp.classLoader)
+        val clazz = XposedHelpers.findClassIfExists(ACTIVITY_LYRICS, lpp.classLoader) ?: return
         XposedHelpers.findAndHookMethod(
             clazz,
             METHOD_ON_CREATE,
@@ -99,7 +100,7 @@ class MainHook : IXposedHookLoadPackage {
     }
 
     private fun processQueue(lpp: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClass(ACTIVITY_QUEUE, lpp.classLoader)
+        val clazz = XposedHelpers.findClassIfExists(ACTIVITY_QUEUE, lpp.classLoader) ?: return
         XposedHelpers.findAndHookMethod(
             clazz,
             METHOD_ON_CREATE,
@@ -116,10 +117,10 @@ class MainHook : IXposedHookLoadPackage {
     }
 
     private fun processDevicePicker(lpp: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClass(ACTIVITY_DEVICE_PICKER, lpp.classLoader)
+        val clazz = XposedHelpers.findClassIfExists(ACTIVITY_DEVICE_PICKER, lpp.classLoader) ?: return
         XposedHelpers.findAndHookMethod(
             clazz,
-            "onCreate",
+            METHOD_ON_CREATE,
             Bundle::class.java,
             object : XC_MethodHook() {
 

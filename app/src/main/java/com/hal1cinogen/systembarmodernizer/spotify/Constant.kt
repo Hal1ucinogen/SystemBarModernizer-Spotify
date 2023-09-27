@@ -3,6 +3,7 @@ package com.hal1cinogen.systembarmodernizer.spotify
 const val TARGET_PACKAGE_NAME = "com.spotify.music"
 
 const val ACTIVITY_MAIN = "com.spotify.music.MainActivity"
+const val ACTIVITY_MAIN_2 = "com.spotify.music.SpotifyMainActivity"// Start from version 8.8.74.652
 const val ACTIVITY_PLAYING = "com.spotify.nowplaying.musicinstallation.NowPlayingActivity"
 const val ACTIVITY_QUEUE = "com.spotify.nowplayingqueue.queue.NowPlayingQueueActivity"
 const val ACTIVITY_LYRICS = "com.spotify.lyrics.fullscreenview.page.LyricsFullscreenPageActivity"
