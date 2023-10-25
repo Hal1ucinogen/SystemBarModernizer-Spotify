@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +14,7 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
@@ -50,40 +51,45 @@ class MainHook : IXposedHookLoadPackage {
             Bundle::class.java,
             object : XC_MethodHook() {
 
+                @SuppressLint("DiscouragedApi")
                 override fun afterHookedMethod(param: MethodHookParam) {
                     val activity = param.thisObject as? Activity ?: return
                     val window = activity.window ?: return
 
-                    // Just remove translucent overlay on status bar
+                    // Enable edge-to-edge
                     /*                    val flags = window.attributes.flags
                                         val viewFlags = window.decorView.systemUiVisibility
                                         XposedBridge.log("afterHookedMethod: window flags - ${Integer.toHexString(flags)}")
                                         XposedBridge.log("afterHookedMethod: system ui flags - ${Integer.toHexString(viewFlags)}")*/
-//                    val transparentThemeId = 0x7f140427
-//                    activity.setTheme(transparentThemeId)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     window.statusBarColor = Color.TRANSPARENT
-                    window.decorView.systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    window.navigationBarColor = Color.TRANSPARENT
+//                    window.decorView.systemUiVisibility =
+//                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     WindowCompat.setDecorFitsSystemWindows(window, false)
-//                    val dex1 = 0x7f0b0d85
-//                    val bottomBar = activity.findViewById<FrameLayout>(dex1) ?: return
-//                    val resources = activity.resources
-//                    val resourceId =
-//                        resources.getIdentifier("navigation_bar_height", "dimen", "android")
-//                    val height: Int = resources.getDimensionPixelSize(resourceId)
-//                    bottomBar.updatePadding(bottom = height)
+                    // FIXME Podcast page bottom padding
+
+                    // Process bottom navigation padding
+                    val resources = window.decorView.resources
+                    val navBottomId =
+                        resources.getIdentifier("navigation_bar", "id", activity.packageName)
+                    if (navBottomId != 0) {
+                        val bottomBar = activity.findViewById<FrameLayout>(navBottomId) ?: return
+                        bottomBar.updatePadding(bottom = getNavigationHeight(activity))
+                    }
 //                ViewCompat.setOnApplyWindowInsetsListener(bottomBar) { v, insets ->
 //                    v.updatePadding(bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom)
 //                    insets
 //                }
 
-                    // bottom bar gradient background
-                    /* val idHexBottomGradient = 0x7f0b01ed
-                     val bottomGradient = activity.findViewById<View>(idHexBottomGradient) ?: return
-                     bottomGradient.alpha = 0.5f
-                     val drawable = bottomGradient.background
-                     XposedBridge.log("bottom gradient is a gradient background - ${drawable is GradientDrawable}")*/
+                    // Modify bottom bar gradient background
+                    val bottomGradientId =
+                        resources.getIdentifier("bottom_gradient", "id", activity.packageName)
+                    if (bottomGradientId == 0) return
+                    val bottomGradient = activity.findViewById<View>(bottomGradientId) ?: return
+                    bottomGradient.alpha = 0.9f
+                    val drawable = bottomGradient.background
+                    XposedBridge.log("bottom gradient is a gradient background - ${drawable is GradientDrawable}")
                 }
             })
     }
@@ -181,7 +187,8 @@ class MainHook : IXposedHookLoadPackage {
     }
 
     private fun processDevicePicker(lpp: XC_LoadPackage.LoadPackageParam) {
-        val clazz = XposedHelpers.findClassIfExists(ACTIVITY_DEVICE_PICKER, lpp.classLoader) ?: return
+        val clazz =
+            XposedHelpers.findClassIfExists(ACTIVITY_DEVICE_PICKER, lpp.classLoader) ?: return
         XposedHelpers.findAndHookMethod(
             clazz,
             METHOD_ON_CREATE,
