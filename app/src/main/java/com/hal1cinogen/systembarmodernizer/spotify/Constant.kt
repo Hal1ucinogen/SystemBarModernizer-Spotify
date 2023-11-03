@@ -14,4 +14,6 @@ const val ACTIVITY_BLEND_STORY = "com.spotify.blend.tastematch.BlendStoryContain
 
 const val METHOD_ON_CREATE = "onCreate"
 
-const val BACKGROUND_COLOR_GRAY = "#121212"
+const val COLOR_BACKGROUND_GRAY = "#121212"
+const val COLOR_BACKGROUND_BLEND = "#F5F3E4"
+const val COLOR_STATUS_BLEND = "#ACABA0"
