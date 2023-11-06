@@ -11,6 +11,8 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.children
+import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import com.hal1cinogen.systembarmodernizer.spotify.tool.Task
@@ -40,10 +42,6 @@ open class SpBasePlugin {
                         val bottomBar =
                             activity.findViewById<FrameLayout>(navBottomId) ?: return@onMain
                         bottomBar.updatePadding(bottom = getNavigationHeight(activity))
-/*                        ViewCompat.setOnApplyWindowInsetsListener(bottomBar) { v, insets ->
-                            v.updatePadding(bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom)
-                            insets
-                        }*/
                     }
 
                     // Modify bottom bar gradient background
@@ -89,18 +87,31 @@ open class SpBasePlugin {
 
             ACTIVITY_BLEND_STORY -> {
                 Task.onMain {
-                    window.setBackgroundDrawable(ColorDrawable(Color.parseColor(COLOR_BACKGROUND_BLEND)))
-                    window.statusBarColor = Color.parseColor(COLOR_STATUS_BLEND)
+                    window.statusBarColor = Color.TRANSPARENT
                     window.navigationBarColor = Color.TRANSPARENT
-//                    "com.spotify.campaigns.storytelling.container.StorytellingContainerFragment"
-/*                    val dex1 = 0x7f0b1348
-                    XposedBridge.log("Naughty - blend")
-                    val bottomContainer = activity.findViewById<View>(dex1)
-                    XposedBridge.log("Naughty - blend container is - ${bottomContainer.id}")
+                    WindowCompat.setDecorFitsSystemWindows(window, false)
+                    val resources = window.decorView.resources
+                    val id = resources.getIdentifier("content", "id", activity.packageName)
+                    if (id == 0) return@onMain
+                    val container = activity.findViewById<FrameLayout>(id) ?: return@onMain
+                    val child = container.children.firstOrNull() as? ViewGroup ?: return@onMain
+                    val target = child.children.lastOrNull() as? ViewGroup ?: return@onMain
+                    target.children.forEach {
+                        XposedBridge.log("target | $it")
+                    }
                     val height = getStatusHeight(activity)
-                    bottomContainer?.updateLayoutParams<ViewGroup.LayoutParams> {
-                        (this as ViewGroup.MarginLayoutParams).topMargin = height
-                    }*/
+//                    "com.spotify.campaigns.storytelling.container.StorytellingContainerFragment"
+//                    View - R.id.top_background
+//                    View - R.id.stories_progress_bar
+//                    ImageView - R.id.spotify/pause/mute/close
+                    val progressId =
+                        resources.getIdentifier("stories_progress_bar", "id", activity.packageName)
+                    val progress = target.findViewById<View>(progressId) ?: return@onMain
+                    val nowMargin = progress.marginTop
+                    XposedBridge.log("nowMargin | $nowMargin")
+                    progress.updateLayoutParams<ViewGroup.LayoutParams> {
+                        (this as ViewGroup.MarginLayoutParams).topMargin = height + nowMargin
+                    }
                 }
             }
         }
