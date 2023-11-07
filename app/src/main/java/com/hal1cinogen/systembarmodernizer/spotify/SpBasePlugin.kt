@@ -114,6 +114,14 @@ open class SpBasePlugin {
                     }
                 }
             }
+
+            ACTIVITY_EDIT_PROFILE -> {
+                Task.onMain(100) {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    setSystemBarTransparent(window)
+                    WindowCompat.setDecorFitsSystemWindows(window, false)
+                }
+            }
         }
     }
 

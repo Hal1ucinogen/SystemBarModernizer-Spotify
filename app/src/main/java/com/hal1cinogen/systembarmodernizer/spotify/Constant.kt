@@ -10,6 +10,7 @@ const val ACTIVITY_LYRICS = "com.spotify.lyrics.fullscreenview.page.LyricsFullsc
 const val ACTIVITY_REMOTE_VOLUME = "com.spotify.connect.volumeimpl.widget.RemoteVolumeWidgetActivity"
 const val ACTIVITY_DEVICE_PICKER = "com.spotify.connect.devicepickerimpl.DevicePickerActivity"
 const val ACTIVITY_BLEND_STORY = "com.spotify.blend.tastematch.BlendStoryContainerActivity"
+const val ACTIVITY_EDIT_PROFILE = "com.spotify.profile.editprofile.editprofile.EditProfileActivity"
 
 const val METHOD_ON_CREATE = "onCreate"
 
