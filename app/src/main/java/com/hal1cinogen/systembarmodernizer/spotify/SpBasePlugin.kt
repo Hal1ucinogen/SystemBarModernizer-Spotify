@@ -131,6 +131,21 @@ open class SpBasePlugin {
                     WindowCompat.setDecorFitsSystemWindows(window, false)
                 }
             }
+
+            ACTIVITY_PLAYLIST_PICKER -> {
+                Task.onMain(100) {
+                    setSystemBarTransparent(window)
+                    WindowCompat.setDecorFitsSystemWindows(window, false)
+                    val resources = window.decorView.resources
+                    val id = resources.getIdentifier("recycler_view", "id", activity.packageName)
+                    if (id == 0) return@onMain
+                    val recyclerView = activity.findViewById<ViewGroup>(id) ?: return@onMain
+                    val height = getNavigationHeight(activity)
+                    recyclerView.clipToPadding = false
+                    val originalPaddingBottom = recyclerView.paddingBottom
+                    recyclerView.updatePadding(bottom = height + originalPaddingBottom)
+                }
+            }
         }
     }
 
