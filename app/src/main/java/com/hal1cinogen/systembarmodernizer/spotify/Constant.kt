@@ -11,7 +11,9 @@ const val ACTIVITY_REMOTE_VOLUME = "com.spotify.connect.volumeimpl.widget.Remote
 const val ACTIVITY_DEVICE_PICKER = "com.spotify.connect.devicepickerimpl.DevicePickerActivity"
 const val ACTIVITY_BLEND_STORY = "com.spotify.blend.tastematch.BlendStoryContainerActivity"
 const val ACTIVITY_EDIT_PROFILE = "com.spotify.profile.editprofile.editprofile.EditProfileActivity"
+const val ACTIVITY_TRACK_CREDITS = "com.spotify.trackcredits.trackcredits.TrackCreditsActivity"
 
 const val METHOD_ON_CREATE = "onCreate"
 
 const val COLOR_BACKGROUND_GRAY = "#121212"
+const val COLOR_TOOLBAR = "#282828"

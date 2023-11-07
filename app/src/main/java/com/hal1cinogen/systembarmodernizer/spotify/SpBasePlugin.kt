@@ -122,6 +122,15 @@ open class SpBasePlugin {
                     WindowCompat.setDecorFitsSystemWindows(window, false)
                 }
             }
+
+            ACTIVITY_TRACK_CREDITS -> {
+                Task.onMain(100) {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    window.statusBarColor = Color.parseColor(COLOR_TOOLBAR)
+                    window.navigationBarColor = Color.TRANSPARENT
+                    WindowCompat.setDecorFitsSystemWindows(window, false)
+                }
+            }
         }
     }
 
