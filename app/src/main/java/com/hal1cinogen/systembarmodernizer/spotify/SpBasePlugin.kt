@@ -6,12 +6,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.children
+import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -137,13 +139,21 @@ open class SpBasePlugin {
                     setSystemBarTransparent(window)
                     WindowCompat.setDecorFitsSystemWindows(window, false)
                     val resources = window.decorView.resources
-                    val id = resources.getIdentifier("recycler_view", "id", activity.packageName)
-                    if (id == 0) return@onMain
-                    val recyclerView = activity.findViewById<ViewGroup>(id) ?: return@onMain
                     val height = getNavigationHeight(activity)
-                    recyclerView.clipToPadding = false
-                    val originalPaddingBottom = recyclerView.paddingBottom
-                    recyclerView.updatePadding(bottom = height + originalPaddingBottom)
+                    val id = resources.getIdentifier("recycler_view", "id", activity.packageName)
+                    activity.findViewById<ViewGroup>(id)?.let {
+                        it.clipToPadding = false
+                        val legacyPaddingBottom = it.paddingBottom
+                        it.updatePadding(bottom = height + legacyPaddingBottom)
+
+                    }
+                    val btnId = resources.getIdentifier("done_button", "id", activity.packageName)
+                    activity.findViewById<View>(btnId)?.let {
+                        val defaultMarginBottom = it.marginBottom
+                        it.updateLayoutParams<MarginLayoutParams> {
+                            this.bottomMargin = height + defaultMarginBottom
+                        }
+                    }
                 }
             }
         }
