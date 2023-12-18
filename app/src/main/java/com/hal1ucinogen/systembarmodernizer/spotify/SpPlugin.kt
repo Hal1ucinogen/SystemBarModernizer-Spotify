@@ -1,4 +1,4 @@
-package com.hal1cinogen.systembarmodernizer.spotify
+package com.hal1ucinogen.systembarmodernizer.spotify
 
 import android.app.Activity
 import android.content.Context

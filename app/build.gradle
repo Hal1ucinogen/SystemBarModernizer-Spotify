@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.hal1cinogen.systembarmodernizer.spotify'
+    namespace 'com.hal1ucinogen.systembarmodernizer.spotify'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.hal1cinogen.systembarmodernizer.spotify"
+        applicationId "com.hal1ucinogen.systembarmodernizer.spotify"
         minSdk 27
         targetSdk 34
         versionCode 1

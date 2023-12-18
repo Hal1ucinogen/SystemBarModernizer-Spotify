@@ -1,4 +1,4 @@
-package com.hal1cinogen.systembarmodernizer.spotify
+package com.hal1ucinogen.systembarmodernizer.spotify
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -17,7 +17,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
-import com.hal1cinogen.systembarmodernizer.spotify.tool.Task
+import com.hal1ucinogen.systembarmodernizer.spotify.tool.Task
 import de.robv.android.xposed.XposedBridge
 
 open class SpBasePlugin {

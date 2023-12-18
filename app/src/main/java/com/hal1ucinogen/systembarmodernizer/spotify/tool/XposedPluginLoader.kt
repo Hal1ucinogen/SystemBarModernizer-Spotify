@@ -1,12 +1,12 @@
-package com.hal1cinogen.systembarmodernizer.spotify.tool
+package com.hal1ucinogen.systembarmodernizer.spotify.tool
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
-import com.hal1cinogen.systembarmodernizer.spotify.BuildConfig
-import com.hal1cinogen.systembarmodernizer.spotify.tool.ReflectionUtils.findMethod
+import com.hal1ucinogen.systembarmodernizer.spotify.BuildConfig
+import com.hal1ucinogen.systembarmodernizer.spotify.tool.ReflectionUtils.findMethod
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam

@@ -1,4 +1,4 @@
-package com.hal1cinogen.systembarmodernizer.spotify.tool
+package com.hal1ucinogen.systembarmodernizer.spotify.tool
 
 import java.lang.reflect.Method
 

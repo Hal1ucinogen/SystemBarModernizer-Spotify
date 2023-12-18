@@ -1,4 +1,4 @@
-package com.hal1cinogen.systembarmodernizer.spotify
+package com.hal1ucinogen.systembarmodernizer.spotify
 
 const val TARGET_PACKAGE_NAME = "com.spotify.music"
 

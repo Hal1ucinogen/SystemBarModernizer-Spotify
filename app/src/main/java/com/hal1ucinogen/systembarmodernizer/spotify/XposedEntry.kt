@@ -1,4 +1,4 @@
-package com.hal1cinogen.systembarmodernizer.spotify
+package com.hal1ucinogen.systembarmodernizer.spotify
 
 import android.app.Activity
 import android.app.Application
@@ -8,7 +8,7 @@ import android.graphics.Color
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowCompat
-import com.hal1cinogen.systembarmodernizer.spotify.tool.XposedPluginLoader
+import com.hal1ucinogen.systembarmodernizer.spotify.tool.XposedPluginLoader
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.XC_MethodHook

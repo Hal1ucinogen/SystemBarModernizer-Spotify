@@ -1,8 +1,8 @@
-package com.hal1cinogen.systembarmodernizer.spotify.tool
+package com.hal1ucinogen.systembarmodernizer.spotify.tool
 
 import android.os.Handler
 import android.os.Looper
-import com.hal1cinogen.systembarmodernizer.spotify.tool.ApplicationUtils.application
+import com.hal1ucinogen.systembarmodernizer.spotify.tool.ApplicationUtils.application
 import de.robv.android.xposed.XposedBridge
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledThreadPoolExecutor
