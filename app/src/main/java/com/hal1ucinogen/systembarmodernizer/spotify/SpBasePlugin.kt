@@ -45,16 +45,6 @@ open class SpBasePlugin {
                             activity.findViewById<FrameLayout>(navBottomId) ?: return@onMain
                         bottomBar.updatePadding(bottom = getNavigationHeight(activity))
                     }
-
-                    // Modify bottom bar gradient background
-                    val bottomGradientId =
-                        resources.getIdentifier("bottom_gradient", "id", activity.packageName)
-                    if (bottomGradientId == 0) return@onMain
-                    val bottomGradient =
-                        activity.findViewById<View>(bottomGradientId) ?: return@onMain
-                    bottomGradient.alpha = 0.9f
-                    /*val drawable = bottomGradient.background
-                    XposedBridge.log("bottom gradient is a gradient background - ${drawable is GradientDrawable}")*/
                 }
             }
 
