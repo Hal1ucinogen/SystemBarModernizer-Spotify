@@ -28,29 +28,9 @@ open class SpBasePlugin {
         XposedBridge.log("Activity onCreate - $activity")
         val window = activity.window ?: return
         when (activity.javaClass.name) {
-            ACTIVITY_MAIN, ACTIVITY_MAIN_2 -> {
+            ACTIVITY_MAIN, ACTIVITY_MAIN_2, ACTIVITY_PLAYING, ACTIVITY_REMOTE_VOLUME -> {
                 Task.onMain {
                     // Enable edge-to-edge
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    window.statusBarColor = Color.TRANSPARENT
-                    window.navigationBarColor = Color.TRANSPARENT
-                    WindowCompat.setDecorFitsSystemWindows(window, false)
-                    // FIXME Podcast page bottom padding
-
-                    // Process bottom navigation padding
-                    val resources = window.decorView.resources
-                    val navBottomId =
-                        resources.getIdentifier("navigation_bar", "id", activity.packageName)
-                    if (navBottomId != 0) {
-                        val bottomBar =
-                            activity.findViewById<FrameLayout>(navBottomId) ?: return@onMain
-                        bottomBar.updatePadding(bottom = getNavigationHeight(activity))
-                    }
-                }
-            }
-
-            ACTIVITY_PLAYING, ACTIVITY_REMOTE_VOLUME -> {
-                Task.onMain {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     setSystemBarTransparent(window)
                     WindowCompat.setDecorFitsSystemWindows(window, false)
