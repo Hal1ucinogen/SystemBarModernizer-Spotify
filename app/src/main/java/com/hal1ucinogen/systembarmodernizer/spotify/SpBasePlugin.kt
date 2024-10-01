@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.children
+import androidx.core.view.isInvisible
 import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
@@ -137,12 +138,18 @@ open class SpBasePlugin {
                         it.updatePadding(bottom = height + legacyPaddingBottom)
 
                     }
-                    val btnId = resources.getIdentifier("done_button", "id", activity.packageName)
+                    val btnId =
+                        resources.getIdentifier("done_button_container", "id", activity.packageName)
                     activity.findViewById<View>(btnId)?.let {
                         val defaultMarginBottom = it.marginBottom
                         it.updateLayoutParams<MarginLayoutParams> {
                             this.bottomMargin = height + defaultMarginBottom
                         }
+                    }
+                    val gradientId =
+                        resources.getIdentifier("bottom_gradient", "id", activity.packageName)
+                    activity.findViewById<View>(gradientId)?.let {
+                        it.isInvisible = true
                     }
                 }
             }
