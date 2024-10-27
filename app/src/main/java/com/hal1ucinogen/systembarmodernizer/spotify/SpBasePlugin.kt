@@ -6,15 +6,12 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.children
-import androidx.core.view.isInvisible
-import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -116,20 +113,6 @@ open class SpBasePlugin {
                         it.clipToPadding = false
                         val legacyPaddingBottom = it.paddingBottom
                         it.updatePadding(bottom = height + legacyPaddingBottom)
-
-                    }
-                    val btnId =
-                        resources.getIdentifier("done_button_container", "id", activity.packageName)
-                    activity.findViewById<View>(btnId)?.let {
-                        val defaultMarginBottom = it.marginBottom
-                        it.updateLayoutParams<MarginLayoutParams> {
-                            this.bottomMargin = height + defaultMarginBottom
-                        }
-                    }
-                    val gradientId =
-                        resources.getIdentifier("bottom_gradient", "id", activity.packageName)
-                    activity.findViewById<View>(gradientId)?.let {
-                        it.isInvisible = true
                     }
                 }
             }
