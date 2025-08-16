@@ -3,7 +3,6 @@ package com.hal1ucinogen.systembarmodernizer.spotify
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -14,7 +13,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.children
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
 import com.hal1ucinogen.systembarmodernizer.spotify.tool.Task
 import de.robv.android.xposed.XposedBridge
 
@@ -25,40 +23,16 @@ open class SpBasePlugin {
         XposedBridge.log("Activity onCreate - $activity")
         val window = activity.window ?: return
         when (activity.javaClass.name) {
-            ACTIVITY_MAIN, ACTIVITY_MAIN_2, ACTIVITY_PLAYING, ACTIVITY_REMOTE_VOLUME -> {
-                Task.onMain {
-                    // Enable edge-to-edge
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    setSystemBarTransparent(window)
-                    WindowCompat.setDecorFitsSystemWindows(window, false)
-                }
-            }
-
-            ACTIVITY_LYRICS -> {
+            ACTIVITY_MAIN, ACTIVITY_MAIN_2, ACTIVITY_PLAYING, ACTIVITY_REMOTE_VOLUME, ACTIVITY_LYRICS -> {
                 Task.onMain {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     setSystemBarTransparent(window)
-                    WindowCompat.setDecorFitsSystemWindows(window, false)
-                    val resources = window.decorView.resources
-                    val id = resources.getIdentifier("footer_container", "id", activity.packageName)
-                    if (id == 0) return@onMain
-                    val bottomContainer = activity.findViewById<ViewGroup>(id) ?: return@onMain
-                    val height = getNavigationHeight(activity)
-                    bottomContainer.updateLayoutParams<ViewGroup.LayoutParams> {
-                        (this as ViewGroup.MarginLayoutParams).bottomMargin = height
-                    }
                 }
-            }
-
-            ACTIVITY_QUEUE, ACTIVITY_DEVICE_PICKER -> {
-                setSystemBarTransparent(window)
-                window.setBackgroundDrawable(ColorDrawable(Color.parseColor(COLOR_BACKGROUND_GRAY)))
             }
 
             ACTIVITY_BLEND_STORY -> {
                 Task.onMain {
-                    window.statusBarColor = Color.TRANSPARENT
-                    window.navigationBarColor = Color.TRANSPARENT
+                    setSystemBarTransparent(window)
                     WindowCompat.setDecorFitsSystemWindows(window, false)
                     val resources = window.decorView.resources
                     val id = resources.getIdentifier("content", "id", activity.packageName)
@@ -70,10 +44,6 @@ open class SpBasePlugin {
                         XposedBridge.log("target | $it")
                     }
                     val height = getStatusHeight(activity)
-//                    "com.spotify.campaigns.storytelling.container.StorytellingContainerFragment"
-//                    View - R.id.top_background
-//                    View - R.id.stories_progress_bar
-//                    ImageView - R.id.spotify/pause/mute/close
                     val progressId =
                         resources.getIdentifier("stories_progress_bar", "id", activity.packageName)
                     val progress = target.findViewById<View>(progressId) ?: return@onMain
@@ -85,35 +55,12 @@ open class SpBasePlugin {
                 }
             }
 
-            ACTIVITY_EDIT_PROFILE -> {
-                Task.onMain(100) {
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    setSystemBarTransparent(window)
-                    WindowCompat.setDecorFitsSystemWindows(window, false)
-                }
-            }
-
             ACTIVITY_TRACK_CREDITS -> {
                 Task.onMain(100) {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     window.statusBarColor = Color.parseColor(COLOR_TOOLBAR)
                     window.navigationBarColor = Color.TRANSPARENT
                     WindowCompat.setDecorFitsSystemWindows(window, false)
-                }
-            }
-
-            ACTIVITY_PLAYLIST_PICKER -> {
-                Task.onMain(100) {
-                    setSystemBarTransparent(window)
-                    WindowCompat.setDecorFitsSystemWindows(window, false)
-                    val resources = window.decorView.resources
-                    val height = getNavigationHeight(activity)
-                    val id = resources.getIdentifier("recycler_view", "id", activity.packageName)
-                    activity.findViewById<ViewGroup>(id)?.let {
-                        it.clipToPadding = false
-                        val legacyPaddingBottom = it.paddingBottom
-                        it.updatePadding(bottom = height + legacyPaddingBottom)
-                    }
                 }
             }
         }
