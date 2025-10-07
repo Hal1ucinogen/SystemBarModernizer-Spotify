@@ -23,10 +23,17 @@ open class SpBasePlugin {
         XposedBridge.log("Activity onCreate - $activity")
         val window = activity.window ?: return
         when (activity.javaClass.name) {
-            ACTIVITY_MAIN, ACTIVITY_MAIN_2, ACTIVITY_PLAYING, ACTIVITY_REMOTE_VOLUME, ACTIVITY_LYRICS -> {
+            ACTIVITY_PLAYING -> {
                 Task.onMain {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    setSystemBarTransparent(window)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                    window.statusBarColor = Color.TRANSPARENT
+                    window.isStatusBarContrastEnforced = false
+                    window.decorView.post {
+                        window.navigationBarColor = Color.TRANSPARENT
+                        window.isNavigationBarContrastEnforced = false
+                    }
                 }
             }
 
